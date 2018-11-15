@@ -1,0 +1,33 @@
+version: '3.5'
+
+networks:
+  default:
+    name: netw_postgresql
+
+services:
+  svcs_postgres:
+    image: postgres
+    restart: always
+    container_name: cont_postgres
+    ports:
+      - 5454:5432
+    environment:
+      - DEBUG=false
+
+      - DB_USER=odoo
+      - DB_PASS=123123
+      - DB_NAME=tk_finance
+    volumes:
+      - ~/Workspace/dockers/postgresql/pgdata:/var/lib/postgresql/data
+
+  svcs_pgadmin4:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: cont_pgadmin4
+    ports:
+      - 5050:80
+      - 5051:443
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=quyen.nv@teko.vn
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+
