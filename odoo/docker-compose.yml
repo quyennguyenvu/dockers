@@ -2,6 +2,14 @@ version: '3.5'
 
 networks:
   default:
-    name: netw_odoo
+    name: nw_odoo
 
 services:
+  sc_odoo:
+    build: .
+    restart: always
+    container_name: ct_odoo
+    ports:
+      - 8070:8069
+    volumes:
+      - ~/Workspace/Teko/finance-addons:/Workspace/Teko/finance-addons
