@@ -7,26 +7,26 @@ networks:
 services:
   sc_pg:
     image: postgres
-    restart: always
+    restart: unless-stopped
     container_name: ct_pg
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=123123
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ~/Workspace/dockers/postgresql/pgdata:/var/lib/postgresql/data
-      - ~/Workspace/dockers/postgresql/pglog:/var/log/postgresql
+      - ./pgdata:/var/lib/postgresql/data
+      - ./pglog:/var/log/postgresql
 
   sc_pgadmin4:
     image: dpage/pgadmin4
-    restart: always
+    restart: unless-stopped
     container_name: ct_pgadmin4
     ports:
       - 5050:80
       - 5051:443
     environment:
-      - PGADMIN_DEFAULT_EMAIL=quyen.nv@teko.vn
-      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ~/Workspace/dockers/postgresql/pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
