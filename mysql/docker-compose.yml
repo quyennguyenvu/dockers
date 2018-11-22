@@ -1,0 +1,22 @@
+version: '3.5'
+
+networks:
+  default:
+    name: nw_mysql
+
+services:
+  sc_mysql:
+    image: mysql
+    restart: unless-stopped
+    container_name: ct_mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+      - ${MYSQL_XPORT}:33060
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      # - MYSQL_DATABASE=${MYSQL_DATABASE}
+      # - MYSQL_USER=${MYSQL_USER}
+      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+     - ./data:/var/lib/mysql
+    #  - ./config:/etc/mysql/conf.d

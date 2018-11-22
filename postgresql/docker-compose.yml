@@ -10,23 +10,22 @@ services:
     restart: unless-stopped
     container_name: ct_pg
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:5432
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - ./pglog:/var/log/postgresql
+      - ./data:/var/lib/postgresql/data
 
   sc_pgadmin4:
     image: dpage/pgadmin4
     restart: unless-stopped
     container_name: ct_pgadmin4
     ports:
-      - 5050:80
-      - 5051:443
+      - ${PGADMIN_PORT}:80
+      - ${PGADMIN_XPORT}:443
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ./pgadmin:/var/lib/pgadmin
+      - ./admin:/var/lib/pgadmin
