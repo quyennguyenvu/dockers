@@ -6,7 +6,7 @@ networks:
 
 services:
   sc_redis:
-    image: redis:alpine
+    image: redis:${REDIS_VERSION}
     restart: unless-stopped
     container_name: ct_redis
     ports:

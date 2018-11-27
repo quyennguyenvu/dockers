@@ -7,9 +7,9 @@ networks:
 services:
   sc_odoo:
     build: .
-    restart: always
+    restart: unless-stopped
     container_name: ct_odoo
     ports:
       - 8070:8069
-    volumes:
-      - ~/Workspace/Teko/finance-addons:/Workspace/Teko/finance-addons
+    # volumes:
+    #   - ~/Workspace/Teko/finance-addons:/Workspace/Teko/finance-addons

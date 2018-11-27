@@ -6,7 +6,7 @@ networks:
 
 services:
   sc_pg:
-    image: postgres
+    image: postgres:${POSTGRES_VERSION}
     restart: unless-stopped
     container_name: ct_pg
     ports:
@@ -18,7 +18,7 @@ services:
       - ${POSTGRES_PATH}:/var/lib/postgresql/data
 
   sc_pgadmin4:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:${PGADMIN_VERSION}
     restart: unless-stopped
     container_name: ct_pgadmin4
     ports:

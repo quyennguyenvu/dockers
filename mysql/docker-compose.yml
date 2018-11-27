@@ -6,7 +6,7 @@ networks:
 
 services:
   sc_mysql:
-    image: mysql
+    image: mysql:${MYSQL_VERSION}
     restart: unless-stopped
     container_name: ct_mysql
     ports:
