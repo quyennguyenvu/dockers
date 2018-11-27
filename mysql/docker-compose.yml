@@ -18,5 +18,4 @@ services:
       # - MYSQL_USER=${MYSQL_USER}
       # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-     - ./data:/var/lib/mysql
-    #  - ./config:/etc/mysql/conf.d
+     - ${MYSQL_PATH}:/var/lib/mysql

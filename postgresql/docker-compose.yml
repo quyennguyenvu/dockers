@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ${POSTGRES_PATH}:/var/lib/postgresql/data
 
   sc_pgadmin4:
     image: dpage/pgadmin4
@@ -28,4 +28,4 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ./admin:/var/lib/pgadmin
+      - ${PGADMIN_PATH}:/var/lib/pgadmin

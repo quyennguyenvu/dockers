@@ -1,0 +1,15 @@
+version: '3.5'
+
+networks:
+  default:
+    name: nw_redis
+
+services:
+  sc_redis:
+    image: redis:alpine
+    restart: unless-stopped
+    container_name: ct_redis
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_PATH}:/data

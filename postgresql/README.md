@@ -1,2 +1,2 @@
 ## connect from host
-`psql postgresql://odoo:123123@localhost:5454/postgres`
+`psql postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/postgres`
