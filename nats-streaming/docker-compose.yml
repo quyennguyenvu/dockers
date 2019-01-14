@@ -1,0 +1,16 @@
+version: '3.5'
+
+networks:
+  default:
+    name: nw_nats_streaming
+
+services:
+  sc_nats_streaming:
+    image: nats-streaming:${NATS_VERSION}
+    restart: unless-stopped
+    container_name: ct_nats_streaming
+    ports:
+      - ${NATS_CLIENT_PORT}:4222
+      - ${NATS_MONITOR_PORT}:8222
+      - ${NATS_ROUTE_PORT}:6222
+
