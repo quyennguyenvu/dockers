@@ -1,6 +1,11 @@
 # https://joaquimadraz.com/guide-to-deploy-an-elixir-phoenix-app-to-aws-ecs
 version: "3"
 # Need to run on ECS instance: `docker network create external-network`
+
+networks:
+  default:
+    name: ${NETWORK_NAME}
+
 services:
   es:
     image: elasticsearch:7.17.2

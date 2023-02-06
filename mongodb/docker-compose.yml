@@ -1,8 +1,8 @@
-version: '3.5'
+version: ${DOCKER_VERSION}
 
 networks:
   default:
-    name: nw_mongo
+    name: ${NETWORK_NAME}
 
 services:
   fix-mongodb-permissions:
