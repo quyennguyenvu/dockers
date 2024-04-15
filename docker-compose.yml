@@ -1,0 +1,110 @@
+version: ${DOCKER_VERSION}
+
+networks:
+  default:
+    name: ${NETWORK_NAME}
+
+services:
+  sc_pg:
+    image: postgres:${POSTGRES_VERSION}
+    restart: unless-stopped
+    container_name: ct_pg
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ${POSTGRES_PATH}:/var/lib/postgresql/data
+
+  sc_mysql:
+    image: ${MYSQL_VERSION}
+    restart: unless-stopped
+    container_name: ct_mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+      - ${MYSQL_XPORT}:33060
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      # - MYSQL_DATABASE=${MYSQL_DATABASE}
+      # - MYSQL_USER=${MYSQL_USER}
+      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ${MYSQL_PATH}:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  sc_redis:
+    image: redis:${REDIS_VERSION}
+    restart: unless-stopped
+    container_name: ct_redis
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_PATH}:/data
+
+  sc_nats:
+    image: nats:${NATS_VERSION}
+    restart: unless-stopped
+    container_name: ct_nats
+    ports:
+      - ${NATS_CLIENT_PORT}:4222
+      - ${NATS_MONITOR_PORT}:8222
+      - ${NATS_ROUTE_PORT}:6222
+
+  sc_nats_streaming:
+    image: nats-streaming:${NATS_VERSION}
+    restart: unless-stopped
+    container_name: ct_nats_streaming
+    ports:
+      - ${NATS_CLIENT_PORT}:4222
+      - ${NATS_MONITOR_PORT}:8222
+      - ${NATS_ROUTE_PORT}:6222
+
+  fix-mongodb-permissions:
+    image: bitnami/mongodb:${MONGODB_VERSION}
+    user: root
+    command: chown -R 1001:1001 /bitnami
+    volumes:
+      - ${MONGODB_PATH}:/bitnami
+
+  sc_mongo:
+    image: bitnami/mongodb:${MONGODB_VERSION}
+    restart: unless-stopped
+    container_name: ct_mongo
+    ports:
+      - ${MONGODB_PORT}:27017
+    environment:
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      # - MONGODB_USERNAME=${MONGODB_USERNAME}
+      # - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      # - MONGODB_DATABASE=${MONGODB_DATABASE}
+    volumes:
+      - ${MONGODB_PATH}:/bitnami
+    depends_on:
+      - fix-mongodb-permissions
+
+  elasticsearch:
+    image: elasticsearch:7.17.2
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: -Xmx256m -Xms256m
+      # Bootstrap password.
+      # Used to initialize the keystore during the initial startup of
+      # Elasticsearch. Ignored on subsequent runs.
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+
+  kibana:
+    image: kibana:7.17.2
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://es:9200
+
+    depends_on:
+      - elasticsearch
