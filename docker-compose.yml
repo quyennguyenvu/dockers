@@ -18,6 +18,19 @@ services:
     volumes:
       - ${POSTGRES_PATH}:/var/lib/postgresql/data
 
+  sc_postgis:
+    image: postgis/postgis
+    restart: unless-stopped
+    container_name: ct_postgis
+    ports:
+      - ${POSTGIS_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGIS_DB}
+      - POSTGRES_USER=${POSTGIS_USER}
+      - POSTGRES_PASSWORD=${POSTGIS_PASSWORD}
+    volumes:
+      - ${POSTGIS_PATH}:/var/lib/postgresql/data
+
   sc_mysql:
     image: ${MYSQL_VERSION}
     restart: unless-stopped
