@@ -1,0 +1,23 @@
+networks:
+  default:
+    name: ${NETWORK_NAME}
+    driver: bridge
+
+services:
+  nats:
+    image: nats:${NATS_VERSION}
+    restart: unless-stopped
+    container_name: nats
+    ports:
+      - ${NATS_CLIENT_PORT}:4222
+      - ${NATS_MONITOR_PORT}:8222
+      - ${NATS_ROUTE_PORT}:6222
+
+  nats-streaming:
+    image: nats-streaming:${NATS_VERSION}
+    restart: unless-stopped
+    container_name: nats-streaming
+    ports:
+      - ${NATS_CLIENT_PORT}:4222
+      - ${NATS_MONITOR_PORT}:8222
+      - ${NATS_ROUTE_PORT}:6222

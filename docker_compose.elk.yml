@@ -1,0 +1,52 @@
+networks:
+  default:
+    name: ${NETWORK_NAME}
+    driver: bridge
+
+services:
+  elasticsearch:
+    image: ${ELASTIC_IMAGE}
+    restart: unless-stopped
+    container_name: elasticsearch
+    ports:
+      - ${ELASTIC_HTTP_PORT}:9200
+      - ${ELASTIC_TRANSPORT_PORT}:9300
+    environment:
+      ES_JAVA_OPTS: -Xmx256m -Xms256m
+      # Bootstrap password.
+      # Used to initialize the keystore during the initial startup of
+      # Elasticsearch. Ignored on subsequent runs.
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+
+  kibana:
+    image: ${KIBANA_IMAGE}
+    restart: unless-stopped
+    container_name: kibana
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      ELASTICSEARCH_HOSTS: http://es:9200
+
+    depends_on:
+      - elasticsearch
+
+  prometheus:
+    image: ${PROMETHEUS_IMAGE}
+    restart: unless-stopped
+    container_name: prometheus
+    volumes:
+      - ${PROMETHEUS_PATH}:/etc/prometheus/prometheus.yml
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+
+  grafana:
+    image: ${GRAGANA_IMAGE}
+    restart: unless-stopped
+    container_name: grafana
+    ports:
+      - ${GRAFANA_PORT}:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}

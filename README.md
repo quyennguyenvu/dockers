@@ -1,10 +1,18 @@
-## My docker playground
+# My docker playground
 
 ---
 
-### Use `direnv` to handle env variables
+```bash
+docker-compose -f <docker-compose-file> up -d --build
+```
 
-https://direnv.net/man/direnv-stdlib.1.html
+---
 
-- `source_up`
-- `source_env <file_or_dir_path>`
+## Kafka
+
+- [kafka config](https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-kraft/docker-compose.yml)
+- [kafka ui config](https://github.com/provectus/kafka-ui/blob/master/documentation/compose/kafka-ui.yaml)
+
+## PMM
+
+- [postgresql tags](https://hub.docker.com/r/percona/percona-distribution-postgresql/tags)

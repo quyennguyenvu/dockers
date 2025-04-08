@@ -1,0 +1,68 @@
+networks:
+  default:
+    name: ${NETWORK_NAME}
+    driver: bridge
+
+services:
+  redis:
+    image: ${REDIS_IMAGE}
+    restart: unless-stopped
+    container_name: redis
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_PATH}:/data
+
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    restart: unless-stopped
+    container_name: postgres
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ${POSTGRES_PATH}:/var/lib/postgresql/data
+
+  postgis:
+    image: postgis/postgis
+    restart: unless-stopped
+    container_name: postgis
+    ports:
+      - ${POSTGIS_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGIS_DB}
+      - POSTGRES_USER=${POSTGIS_USER}
+      - POSTGRES_PASSWORD=${POSTGIS_PASSWORD}
+    volumes:
+      - ${POSTGIS_PATH}:/var/lib/postgresql/data
+
+  mysql:
+    image: ${MYSQL_IMAGE}
+    restart: unless-stopped
+    container_name: mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+      - ${MYSQL_XPORT}:33060
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      # - MYSQL_DATABASE=${MYSQL_DATABASE}
+      # - MYSQL_USER=${MYSQL_USER}
+      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ${MYSQL_PATH}:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  mongo:
+    image: ${MONGODB_IMAGE}
+    restart: unless-stopped
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+    ports:
+      - ${MONGODB_PORT}:27017
+    volumes:
+      - ${MONGODB_PATH}:/data
