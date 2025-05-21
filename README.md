@@ -9,6 +9,10 @@ docker-compose -f <docker-compose-file> up -d --build
 
 ---
 
+## PostgreSQL
+
+- [Logging with postgresql](https://betterstack.com/community/guides/logging/how-to-start-logging-with-postgresql/)
+
 ## Kafka
 
 - [kafka config](https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-kraft/docker-compose.yml)
