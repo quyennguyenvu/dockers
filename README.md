@@ -3,6 +3,7 @@
 ---
 
 ```bash
+docker-compose -f docker-compose.db.yml down <service>
 docker-compose -f <docker-compose-file> up -d --build
 ```
 
@@ -16,3 +17,11 @@ docker-compose -f <docker-compose-file> up -d --build
 ## PMM
 
 - [postgresql tags](https://hub.docker.com/r/percona/percona-distribution-postgresql/tags)
+
+## bgbadger
+
+Generate a report from the PostgreSQL logs using [pgbadger](https://github.com/darold/pgbadger).
+
+```bash
+pgbadger ./logs/postgresql*.log -o ~/Downloads/pgbadger-report.html
+```

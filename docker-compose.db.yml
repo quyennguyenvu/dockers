@@ -11,7 +11,7 @@ services:
     ports:
       - ${REDIS_PORT}:6379
     volumes:
-      - ${REDIS_PATH}:/data
+      - ./volumes/redis/data:/data
 
   postgres:
     image: ${POSTGRES_IMAGE}
@@ -24,7 +24,13 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ${POSTGRES_PATH}:/var/lib/postgresql/data
+      - ./volumes/postgresql/data:/var/lib/postgresql/data
+      - ./config/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./logs/postgresql:/var/lib/postgresql/data/logs
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
 
   postgis:
     image: postgis/postgis
@@ -37,7 +43,7 @@ services:
       - POSTGRES_USER=${POSTGIS_USER}
       - POSTGRES_PASSWORD=${POSTGIS_PASSWORD}
     volumes:
-      - ${POSTGIS_PATH}:/var/lib/postgresql/data
+      - ./volumes/postgis/data:/var/lib/postgresql/data
 
   mysql:
     image: ${MYSQL_IMAGE}
@@ -52,7 +58,7 @@ services:
       # - MYSQL_USER=${MYSQL_USER}
       # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - ${MYSQL_PATH}:/var/lib/mysql
+      - ./volumes/mysql/data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   mongo:
@@ -65,4 +71,4 @@ services:
     ports:
       - ${MONGODB_PORT}:27017
     volumes:
-      - ${MONGODB_PATH}:/data
+      - ./volumes/mongodb/data:/data
